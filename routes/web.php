@@ -15,6 +15,16 @@ Route::get('/', function () {
     return view('analysis.show');
 });
 
+Route::get('/analysis','analysisController@show');
+
+Route::get('/projects','projectController@index');
+Route::get('/projects/destroy/{id}','projectController@destroy');
+Route::get('/projects/update/{id}','projectController@update');
+
+
+
+
+
 Route::get('/interviews','interviewController@index');
 Route::get('/interviews/destroy/{id}','interviewController@destroy');
 Route::get('/interviews/update/{id}','interviewController@update');

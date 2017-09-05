@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\project;
 
 class analysisController extends Controller
 {
@@ -15,7 +16,9 @@ class analysisController extends Controller
      */
     public function show()
     {
-        return view('welcome');
+        $data['moduleName']='Analysis';        
+        $data['project']=project::all()->pluck('name','id')->toArray();
+        return view('analysis.show')->with($data);
     }
 
 }

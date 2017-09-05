@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\project;
 
 class projectController extends Controller
 {
@@ -13,7 +14,10 @@ class projectController extends Controller
      */
     public function index()
     {
-        //
+        $data=[];
+        $data['moduleName']='Projects List';
+        $data['projects']=project::get();
+        return view('project.show', $data);
     }
 
     /**
@@ -68,7 +72,9 @@ class projectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data['moduleName']='Project Details';        
+        $data['project']=project::where('id',$id)->with('categories.features')->first();
+        return view('project.addedit', $data);
     }
 
     /**
@@ -79,6 +85,7 @@ class projectController extends Controller
      */
     public function destroy($id)
     {
-        //
+        project::find($id)->delete();
+        return redirect('/projects');
     }
 }

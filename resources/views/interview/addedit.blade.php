@@ -16,10 +16,11 @@
 						
 						if(isset($contacts)){$contactOptions=$contacts;}
 						else{$contactOptions=[];}
-						if(isset($projectfeatureList)){$featureOptions=$projectfeatureList->features->pluck('name')->toArray();}
+						if(isset($projectfeatureList)){$featureOptions=$projectfeatureList;}
 						else{$featureOptions=[];}
 
 						if(isset($interview)){
+							$id=$interview->id;
 							$notes=$interview->notes;
 							$date=$interview->date;
 							$selectedContacts=$interview->contacts->pluck('name')->toArray();
@@ -42,16 +43,17 @@
 						}
 						else
 						{
+							$id=0;
 							$notes='';
 							$date=\Carbon\Carbon::now();
-							$selectedContacts=[];
-							$selectedFeatures=[];
+							$selectedContactsId=[];
+							$selectedFeaturesId=[];
 						}
 
 					?>
 					<div class="box-body">
 					{{Form::open(['url'=>'interviews/store'])}}
-
+					{{Form::hidden('id', $id)}}
 
 					<div class="col-md-5">
 						<div class="col-md-3">

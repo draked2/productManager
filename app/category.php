@@ -16,7 +16,7 @@ class category extends Model
     protected $dates = ['deleted_at'];
 
     public function project(){return $this->belongsTo('App\project');}
-    public function features(){return $this->belongsToMany('App\feature');}
+    public function features(){return $this->hasMany('App\feature');}
 
     
 }

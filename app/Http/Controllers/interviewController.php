@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\interview;
 use App\project;
 use App\contact;
+use App\featureInterview;
+use App\contactInterview;
 
 class interviewController extends Controller
 {
@@ -40,7 +42,29 @@ class interviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $id=$request->id;
+        $newValues=[
+            'date'=>$request->date,  
+            'notes'=>$request->notes,    
+        ];
+        //make the boring entries
+        if($id) {$newInterview=interview::find($id)->update($newValues);}
+        else {$newInterview=interview::create($newValues);}
+        //update the pivot tables by first deleting all current entries, then adding new entries
+        featureInterview::where('interview_id',$id)->delete();
+        foreach($request->features as $feature){
+            featureInterview::create(['interview_id'=>$id,
+                                        'feature_id'=>$feature
+                                    ]);
+        }
+        contactInterview::where('interview_id',$id)->delete();
+        foreach($request->contacts as $contact){
+            contactInterview::create(['interview_id'=>$id,
+                                        'contact_id'=>$contact
+                                    ]);
+        }
+        return redirect('/interviews');
+
     }
 
     /**
@@ -76,8 +100,8 @@ class interviewController extends Controller
     {
         $data['moduleName']='Interview Details';        
         $data['interview']=interview::where('id',$id)->with('project')->with('contacts')->with('features')->first();
-        $data['projectfeatureList']= project::Find($data['interview']->project_id)->with('features')->first();
-        $data['contacts']=contact::pluck('name')->toArray();
+        $data['projectfeatureList']= project::Find($data['interview']->project_id)->with('features')->first()->features->pluck('name','id')->toArray();
+        $data['contacts']=contact::pluck('name','id')->toArray();
         return view('interview.addedit', $data);
     }
 
