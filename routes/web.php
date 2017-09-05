@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('analysis.show');
 });
 
+Route::get('/interviews','interviewController@index');
+
 Route::group(['middleware' => 'auth'], function () {
     //    Route::get('/link1', function ()    {
 //        // Uses Auth Middleware

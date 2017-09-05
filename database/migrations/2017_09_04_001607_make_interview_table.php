@@ -15,9 +15,10 @@ class MakeInterviewTable extends Migration
     {
         Schema::create('interviews', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
             $table->text('notes');
             $table->timestamp('date');
+            $table->integer('project_id')->unsigned();
+            $table->foreign('project_id')->references('id')->on('projects');
             $table->timestamps();
             $table->softDeletes();
         });

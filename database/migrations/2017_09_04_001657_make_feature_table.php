@@ -16,8 +16,8 @@ class MakeFeatureTable extends Migration
         Schema::create('features', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('categoryId')->unsigned();
-            $table->foreign('categoryId')->references('id')->on('categories');
+            $table->integer('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();
             $table->softDeletes();
         });

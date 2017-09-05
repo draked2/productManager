@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\interview;
 
-class researchController extends Controller
+class interviewController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +14,10 @@ class researchController extends Controller
      */
     public function index()
     {
-        //
+        $data=[];
+        $data['moduleName']='Interviews List';
+        $data['interviews']=interview::with('project')->with('contacts')->orderBy('date','DESC')->get();
+        return view('interview.show', $data);
     }
 
     /**
@@ -79,6 +83,7 @@ class researchController extends Controller
      */
     public function destroy($id)
     {
-        //
+        interview::find($id)->delete();
+        return redirect('/interview');
     }
 }

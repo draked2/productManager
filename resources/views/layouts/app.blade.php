@@ -40,8 +40,6 @@ desired effect
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
 
-        @include('layouts.partials.contentheader')
-
         <!-- Main content -->
         <section class="content">
             <!-- Your Page Content Here -->
@@ -57,6 +55,7 @@ desired effect
 </div>
 @section('scripts')
     @include('layouts.partials.scripts')
+    @yield('additionalScripts')
 @show
 
 </body>

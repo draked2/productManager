@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class project extends Model
 {
@@ -13,4 +14,7 @@ class project extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function interviews(){return $this->belongsToMany('App\interview');}
+    
 }

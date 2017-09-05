@@ -13,3 +13,33 @@
         'csrfToken' => csrf_token(),
     ]) !!};
 </script>
+<!-- productResearcher modifications -->
+<script>
+//cleanup annoying Vue mesasages
+Vue.config.devtools = false;
+Vue.config.productionTip = false
+</script>
+<script type="text/javascript" src="{{ asset('js/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.dataTable').DataTable({
+            scrollY:        '300',
+            deferRender:    true,
+            scroller:       true,
+            "lengthChange": false,
+            drawCallback: function(settings) {
+                var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                pagination.hide();
+                //hacky way of getting the searchbar to the left by finding the half 
+                //column element and pulling it right
+                $('.dataTables_filter').parent().prev().addClass('pull-right');
+                //force css of table
+                $("tr:even").css("background-color", "#F0F8FF")
+                $("th").css("background-color", "#E6E6FA")
+            }
+
+            });
+        } );
+
+    //# sourceURL=filename.js
+</script>

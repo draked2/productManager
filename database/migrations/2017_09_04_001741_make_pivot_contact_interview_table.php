@@ -13,12 +13,12 @@ class MakePivotContactInterviewTable extends Migration
      */
     public function up()
     {
-        Schema::create('pivotContactInterviews', function (Blueprint $table) {
+        Schema::create('contact_interview', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('contactId')->unsigned();
-            $table->foreign('contactId')->references('id')->on('contacts');
-            $table->integer('interviewId')->unsigned();
-            $table->foreign('interviewId')->references('id')->on('interviews');
+            $table->integer('contact_id')->unsigned();
+            $table->foreign('contact_id')->references('id')->on('contacts');
+            $table->integer('interview_id')->unsigned();
+            $table->foreign('interview_id')->references('id')->on('interviews');
             $table->timestamps();
         });
     }
@@ -30,7 +30,7 @@ class MakePivotContactInterviewTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pivotContactInterviews');
+        Schema::dropIfExists('contact_interview');
         
     }
 }

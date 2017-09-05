@@ -36,7 +36,7 @@
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="{{ url('Analysis') }}"><i class='fa fa-line-chart'></i> <span>Analysis</span></a></li>
             <li class="active"><a href="{{ url('Projects') }}"><i class='fa fa-object-group'></i> <span>Projects</span></a></li>
-            <li class="active"><a href="{{ url('Research') }}"><i class='fa fa-group'></i> <span>Research</span></a></li>
+            <li class="active"><a href="{{ url('interviews') }}"><i class='fa fa-user-circle '></i> <span>Research</span></a></li>
 
             {{--
             <li class="treeview">

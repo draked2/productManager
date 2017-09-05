@@ -18,8 +18,8 @@ class MakeContactTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('phoneNumber');
-            $table->integer('organizationId')->nullable()->unsigned();
-            $table->foreign('organizationId')->references('id')->on('organizations');
+            $table->integer('organization_id')->nullable()->unsigned();
+            $table->foreign('organization_id')->references('id')->on('organizations');
             $table->timestamps();
             $table->softDeletes();
         });
