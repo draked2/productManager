@@ -21,4 +21,5 @@ class interview extends Model
 
     public function project(){return $this->belongsTo('App\project');}
     public function contacts(){return $this->belongsToMany('App\contact');}
+    public function features(){return $this->belongsToMany('App\feature');}
 }

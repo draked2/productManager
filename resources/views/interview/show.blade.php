@@ -28,7 +28,7 @@
                         <tbody>
                         @foreach($interviews as $interview)
                         <tr>
-                            <td><a class='fa fa-edit'></a></td>
+                            <td><a  href="{{ url('/interviews/update/'.$interview->id) }}" class='fa fa-edit'></a></td>
                             <td nowrap="nowrap">{{$interview->date->format('d-m-Y')}}</td>
                             <td>
                                 @if(count($interview->contacts)==0)
@@ -49,7 +49,7 @@
                                 @endif
                             </td> 
                             <td nowrap="nowrap">{{$interview->project->name}}</td>
-                            <td><a href="{{ url('/interview/delete/'.$interview->id) }}" class='fa fa-trash-o'></a></td>
+                            <td><a href="{{ url('/interviews/destroy/'.$interview->id) }}" class='fa fa-trash-o'></a></td>
                         </tr>
                         @endforeach
                         </tbody>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\interview;
+use App\project;
+use App\contact;
 
 class interviewController extends Controller
 {
@@ -72,7 +74,11 @@ class interviewController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data['moduleName']='Interview Details';        
+        $data['interview']=interview::where('id',$id)->with('project')->with('contacts')->with('features')->first();
+        $data['projectfeatureList']= project::Find($data['interview']->project_id)->with('features')->first();
+        $data['contacts']=contact::pluck('name')->toArray();
+        return view('interview.addedit', $data);
     }
 
     /**
@@ -84,6 +90,6 @@ class interviewController extends Controller
     public function destroy($id)
     {
         interview::find($id)->delete();
-        return redirect('/interview');
+        return redirect('/interviews');
     }
 }

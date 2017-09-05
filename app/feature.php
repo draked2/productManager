@@ -15,4 +15,10 @@ class feature extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function project(){return $this->hasManyThrough('App\project','App\category',
+                                                            'project_id','id','category_id');}
+    public function interviews(){return $this->belongsToMany('App\feature');}
+                                                            
+    
 }
