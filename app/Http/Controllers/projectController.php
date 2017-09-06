@@ -29,7 +29,8 @@ class projectController extends Controller
      */
     public function create()
     {
-        //
+        $data['moduleName']='Project Details';        
+        return view('project.addedit', $data);
     }
 
     /**
@@ -46,11 +47,17 @@ class projectController extends Controller
             'name'=>$request->name,  
             'description'=>$request->description,    
         ];
+        
         if($id) {
             $project=project::where('id',$id)->update($newValues);
             $project=project::where('id',$id);
         }
-        else {$project=project::create($newValues);}
+        else {
+            //$id=0 means we're making a new entry
+            //update the entry and record it's actual id
+            $project=project::create($newValues);
+            $id=$project->id;
+        }
         //get the keys of the category array
         
         $indeces=array_keys($request->category);
@@ -59,30 +66,55 @@ class projectController extends Controller
             //existing category
             if($index>0)
             {
-                //update category
-                category::where('id', $index)->update(['name'=>$request->category[$index]]);
-                //find all features that point to this category. If they don't exist in this array remove them, add the missing one
-                $cat=category::where('id',$index)->with('features')->first();
-                //remove unnecessary entries
-
-                
-                foreach(explode(' ,',$request->features[$index]) as $feature)
+                //do we want to delete this category?
+                if($request->deleteFlag[$index])
                 {
-                    //if a feature, remove if from collection
-                    if(!$cat->features->contains('name',$feature)) {
-                        $featureIndex=$cat->features->find('name','adsf');
-                        $cat->features=$cat->features->forget($featureIndex);
-                    }
+                    feature::where('category_id',$index)->delete();
+                    category::where('id',$index)->delete();
                 }
-                //THERE MUST BE A CLEANER WAY OF DOING THIS BUT IM WASTING SO MUCH TIME IM JUST GOING TO DO A SECOND LOOP
-                foreach($cat->features as $feature)
+                //otherwise run this convoluted code to update category
+                else
                 {
-                    if(!array_search($feature->name,explode(' ,',$request->features[$index])))
+                    //update category
+                    category::where('id', $index)->update(['name'=>$request->category[$index]]);
+                    //find all features that point to this category. If they don't exist in this array remove them, add the missing one
+                    $cat=category::where('id',$index)->with('features')->first();
+                    //remove unnecessary entries
+                    $currentFeatures=explode(',',$request->features[$index]);
+                    
+                    foreach($currentFeatures as $feature)
                     {
-                        $feature->delete();
+                        //if a feature, remove if from collection
+                        if(!($cat->features->contains('name',$feature))) {
+                            feature::create(['name'=>$feature,
+                                            'project_id'=>$id,
+                                            'category_id'=>$cat->id
+                                            ]);
+                        }
+                    }
+                    //THERE MUST BE A CLEANER WAY OF DOING THIS BUT IM WASTING SO MUCH TIME IM JUST GOING TO DO A SECOND LOOP
+                    foreach($cat->features as $feature)
+                    {
+                        if(!in_array($feature->name,$currentFeatures)){
+                            $feature->delete();
+                        }
                     }
                 }
-                
+            //is this a new element that we actually want to have inserted?
+            }else if ($index<0&&!$request->deleteFlag[$index]){
+                //create the new category (this is identified by a negative index)
+                $cat=category::create(['name'=>$request->category[$index],
+                                    'project_id'=>$id
+                                ]);
+                $currentFeatures=explode(',',$request->features[$index]);
+                //create all new features for this new category
+                foreach($currentFeatures as $feature)
+                {
+                    feature::create(['name'=>$feature,
+                                    'project_id'=>$id,
+                                    'category_id'=>$cat->id
+                    ]);
+                }                              
             }
         }
         
