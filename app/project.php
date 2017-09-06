@@ -26,8 +26,21 @@ class project extends Model
       });
     }
 
+    //Relationships
     public function interviews(){return $this->hasMany('App\interview');}
     public function categories(){return $this->hasMany('App\category');}
     public function features(){return $this->hasManyThrough('App\feature','App\category','project_id','category_id','id');}
     
+    //Scopes
+    public function scopeAnalytics($query,$start,$stop)
+    {
+        return $query->with(["categories.features.interviews"=>function($query) use ($start, $stop){
+                        $query->where('date','<',$stop)
+                        ->where('date','>',$start);   
+                    }])
+                    ->with(['interviews'=>function($query) use ($start, $stop){
+                        $query->where('date','<',$stop)
+                            ->where('date','>',$start);
+                    }]);
+    }
 }

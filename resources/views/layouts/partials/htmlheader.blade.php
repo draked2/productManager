@@ -7,6 +7,7 @@
 
     <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" />
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
     
     
 

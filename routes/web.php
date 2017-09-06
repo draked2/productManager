@@ -11,11 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('analysis.show');
-});
 
+
+Route::get('/test','analysisController@test');
+Route::get('/','analysisController@show');
 Route::get('/analysis','analysisController@show');
+Route::post('/analysis/getData','analysisController@getData');
+Route::get('/analysis/getData','analysisController@getData');
+Route::post('/analysis/getCategoryData','analysisController@getCategoryData');
+Route::get('/analysis/getCategoryData','analysisController@getCategoryData');
 
 Route::get('/projects','projectController@index');
 Route::get('/projects/destroy/{id}','projectController@destroy');
