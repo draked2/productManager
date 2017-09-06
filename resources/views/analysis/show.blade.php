@@ -104,32 +104,39 @@
 @endsection
 
 @section('additionalScripts')
+
 <script>
-$( document ).ready(
 
-	
-
-
-
-	/*
-	$('#categoryTable').dataTable( {
-	"ajax": {
+function startAnalytics() {
+id=$('#project').val()
+start=$('#start').val()
+stop=$('#stop').val()
+$.ajax({
 		"url": "{{url('/analysis/getData')}}",
 		"type": "POST",
-		"aoColumns": [
-			{ mDataProp: 'Id' },
-			{ mDataProp: 'Name' },
-			{ mDataProp: 'Count' }
-			],
+		
 		"data":{
 			"_token":"{{csrf_token()}}",
-		}
-	}})
-	*/
-)
-</script>
+			"id":id,
+			"start":start,
+			"stop":stop,
+		},
+		"success": function(result){
+			category=result['categoryStats']
+			feature=result['featureStats']
+			interview=result['interviewCount']
 
-<script>
+			drawDatatable('#categoryTable',category)
+			updatePieChart('categoryContainer','Categories',category)
+
+			drawDatatable('#featureTable',feature)
+			updatePieChart('featureContainer','Features',feature)
+
+			updateBarGraph('interviewContainer', 'Weekly Interviews Conducted',interview)
+			}
+		
+	});
+}
 
 function updateAnalytics() {
 id=$('#project').val()
@@ -162,7 +169,8 @@ $.ajax({
 	});
 }
 
-function updateDatatable(divId,data) {
+function drawDatatable(divId,data) {
+
 	 $(divId).DataTable( {
 		"data": data,
         "columns": [
@@ -185,6 +193,12 @@ function updateDatatable(divId,data) {
             }
     } );
 }
+
+function updateDatatable(divId,data) {
+	$(divId).dataTable().fnClearTable();
+	$(divId).dataTable().fnAddData(data);
+}
+    
 
 function updatePieChart(divId, text, data) {
 	//prepare the series using the data
@@ -269,7 +283,7 @@ function updateBarGraph(divId, title,data){
 });
 }
 $( document ).ready(function() {
-	updateAnalytics();
+	startAnalytics();
 	$('.inputListener').change(function() {updateAnalytics()});
 })
 
