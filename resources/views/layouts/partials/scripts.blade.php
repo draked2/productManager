@@ -5,6 +5,7 @@
 <script src="{{ url (mix('/js/app.js')) }}" type="text/javascript"></script>
 <script src="{{ asset('/js/typeahead.jquery.js') }}" type="text/javascript"></script>
 <script type="text/javascript" src="{{ asset('js/datatables.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/selectize.min.js') }}"></script>
 
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.

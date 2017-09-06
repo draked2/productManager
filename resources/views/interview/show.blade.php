@@ -14,7 +14,10 @@
 
 					</div>
 					<div class="box-body">
-						
+                    <div class="pull-right">
+						<a class="btn btn-primary" href="{{ url('/interviews/create') }}">Add Interview</a>
+                        </div>
+                        <div>
                         <table style="width:100%" class="dataTable">
                         <thead>
                             <tr>
@@ -54,6 +57,7 @@
                         @endforeach
                         </tbody>
                         </table>
+                        <div>
 					</div>
 					<!-- /.box-body -->
 				</div>

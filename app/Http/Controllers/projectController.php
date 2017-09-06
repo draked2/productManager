@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\project;
+use App\category;
+use App\feature;
 
 class projectController extends Controller
 {
@@ -38,7 +40,53 @@ class projectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //update the boring old project
+        $id=$request->id;
+        $newValues=[
+            'name'=>$request->name,  
+            'description'=>$request->description,    
+        ];
+        if($id) {
+            $project=project::where('id',$id)->update($newValues);
+            $project=project::where('id',$id);
+        }
+        else {$project=project::create($newValues);}
+        //get the keys of the category array
+        
+        $indeces=array_keys($request->category);
+        foreach($indeces as $index)
+        {
+            //existing category
+            if($index>0)
+            {
+                //update category
+                category::where('id', $index)->update(['name'=>$request->category[$index]]);
+                //find all features that point to this category. If they don't exist in this array remove them, add the missing one
+                $cat=category::where('id',$index)->with('features')->first();
+                //remove unnecessary entries
+
+                
+                foreach(explode(' ,',$request->features[$index]) as $feature)
+                {
+                    //if a feature, remove if from collection
+                    if(!$cat->features->contains('name',$feature)) {
+                        $featureIndex=$cat->features->find('name','adsf');
+                        $cat->features=$cat->features->forget($featureIndex);
+                    }
+                }
+                //THERE MUST BE A CLEANER WAY OF DOING THIS BUT IM WASTING SO MUCH TIME IM JUST GOING TO DO A SECOND LOOP
+                foreach($cat->features as $feature)
+                {
+                    if(!array_search($feature->name,explode(' ,',$request->features[$index])))
+                    {
+                        $feature->delete();
+                    }
+                }
+                
+            }
+        }
+        
+        return redirect('/projects');
     }
 
     /**
@@ -58,9 +106,12 @@ class projectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function addNew()
     {
-        //
+        return redirect('/projects');
+        $data['moduleName']='Project Details';  
+        dd($data);
+        return view('project.addedit', $data);        
     }
 
     /**

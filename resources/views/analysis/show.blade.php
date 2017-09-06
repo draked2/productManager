@@ -9,7 +9,7 @@
 				<!-- Default box -->
 				<div class="box">
 					<div class="box-header with-border">
-						<h3 class="box-title">Configuration</h3>
+						<h3 class="box-title">Analysis Configuration</h3>
 
 						
 					</div>

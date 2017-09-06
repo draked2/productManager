@@ -24,6 +24,8 @@ Route::get('/analysis/getCategoryData','analysisController@getCategoryData');
 Route::get('/projects','projectController@index');
 Route::get('/projects/destroy/{id}','projectController@destroy');
 Route::get('/projects/update/{id}','projectController@update');
+Route::post('/projects/store','projectController@store');
+Route::post('/projects/create','projectController@create');
 
 
 
@@ -33,6 +35,7 @@ Route::get('/interviews','interviewController@index');
 Route::get('/interviews/destroy/{id}','interviewController@destroy');
 Route::get('/interviews/update/{id}','interviewController@update');
 Route::post('/interviews/store','interviewController@store');
+Route::post('/interviews/create','interviewController@create');
 
 Route::group(['middleware' => 'auth'], function () {
     //    Route::get('/link1', function ()    {

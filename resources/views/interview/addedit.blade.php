@@ -52,10 +52,28 @@
 
 					?>
 					<div class="box-body">
+					<div class='col-md-12'>
+						<div class='col-md-1'>
+						@if(isset($nextURL))
+							<a  href="{{$nextURL}}">Next</a>
+						@endif
+						</div>
+						<div class='offset-md-10'>
+						</div>
+						<div class='col-md-1 pull-right'>
+						@if(isset($prevURL))
+							<a  href="{{$prevURL}}">Previous</a>
+						@endif
+						</div>
+
+					</div>
+
+					<br>
+
 					{{Form::open(['url'=>'interviews/store'])}}
 					{{Form::hidden('id', $id)}}
 
-					<div class="col-md-5">
+					<div class="col-md-5" style="margin-top: 25px;">
 						<div class="col-md-3">
 						<a class="btn btn-default btn-close" href="{{ URL::previous() }}">Cancel</a>
 						</div>

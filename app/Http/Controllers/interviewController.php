@@ -31,7 +31,10 @@ class interviewController extends Controller
      */
     public function create()
     {
-        //
+        $data=[];
+        $data['moduleName']='Interviews List';
+        $data['interviews']=interview::with('project')->with('contacts')->orderBy('date','DESC')->get();
+        return view('interview.show', $data);
     }
 
     /**
@@ -102,6 +105,12 @@ class interviewController extends Controller
         $data['interview']=interview::where('id',$id)->with('project')->with('contacts')->with('features')->first();
         $data['projectfeatureList']= project::Find($data['interview']->project_id)->with('features')->first()->features->pluck('name','id')->toArray();
         $data['contacts']=contact::pluck('name','id')->toArray();
+
+        $nextObj=interview::where('id','>',$id)->where('project_id',$data['interview']->project_id)->first();
+        $prevObj=interview::where('id','<',$id)->where('project_id',$data['interview']->project_id)->get()->last();
+        if(isset($nextObj)) $data['nextURL']=url('/interviews/update/'.$nextObj->id);
+        if(isset($prevObj)) $data['prevURL']=url('/interviews/update/'.$prevObj->id);
+
         return view('interview.addedit', $data);
     }
 
