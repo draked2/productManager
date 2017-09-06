@@ -36,6 +36,8 @@ Route::get('/interviews/destroy/{id}','interviewController@destroy');
 Route::get('/interviews/update/{id}','interviewController@update');
 Route::post('/interviews/store','interviewController@store');
 Route::get('/interviews/create','interviewController@create');
+Route::post('/interviews/loadFeatures','interviewController@loadFeatures');
+
 
 Route::group(['middleware' => 'auth'], function () {
     //    Route::get('/link1', function ()    {

@@ -30,7 +30,7 @@ class analysisController extends Controller
         //only return stats on categories
         $start=new dateTime($request->start);
         $stop=new dateTime($request->stop);        
-        $analyticsObject=project::find($request->id)->analytics($start,$stop)->first();
+        $analyticsObject=project::where('id',$request->id)->analytics($start,$stop)->first();
         $allCategoriesAndFeatures=self::countCategoriesAndFeatures($analyticsObject);
         $interviewCount=self::countInterviews($analyticsObject,$start,$stop);
 

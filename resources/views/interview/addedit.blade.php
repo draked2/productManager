@@ -81,6 +81,12 @@
 						{{Form::submit('Save',['class'=>'btn btn-primary form-control','style'=>"margin-bottom: 10px;"])}}
 						</div>
 						<div class="col-md-3">
+						{{Form::label('project','Project: ')}}
+						</div>
+						<div class="col-md-9 control-group">
+						{{Form::select('project', $projects,null,['style'=>"width: 200px;margin-bottom: 10px;"])}}
+						</div>
+						<div class="col-md-3">
 						{{Form::label('date','Date: ')}}
 						</div>
 						<div class="col-md-9 control-group">
@@ -92,7 +98,7 @@
 						</div>
 						<div class="col-md-9 control-group">
 						{{ Form::select('features[]', $featureOptions,$selectedFeaturesId,['multiple'=>'multiple',
-																						'id'=>'contacts',
+																						'id'=>'features',
 																						'style'=>"width: 200px;height: 100px;margin-bottom: 10px;"
 																						]) }}
 						</div>
@@ -131,6 +137,36 @@
 @endsection
 
 @section('additionalScripts')
+<script>
+function updateFeatures(){
+	$.ajax({
+		"url": "{{url('/interviews/loadFeatures')}}",
+		"type": "POST",
+		
+		"data":{
+			"_token":"{{csrf_token()}}",
+			"id":$('#project').val(),
+		},
+		"success": function(result){
 
+
+			$('#features')
+				.find('option')
+				.remove()
+
+			for (var key in result) {
+				$('#features').append(new Option(result[key],key))
+			}
+		}	
+	});
+}
+
+$( document ).ready(function() {
+	$('#project').change(function(){
+		updateFeatures()
+	})
+})
+//# sourceURL=interviewAddedit.js
+</script>
 
 @endsection

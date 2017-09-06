@@ -15,7 +15,7 @@
 					</div>
 					<div class="box-body">
 						<div class="pull-right">
-						<a class="btn btn-primary" href="{{ url('/projects/create') }}">Add Interview</a>
+						<a class="btn btn-primary" href="{{ url('/projects/create') }}">Add Project</a>
                         </div>
                         <div>
                         <table style="width:100%" class="dataTable">

@@ -48,7 +48,8 @@ class interviewController extends Controller
         $id=$request->id;
         $newValues=[
             'date'=>$request->date,  
-            'notes'=>$request->notes,    
+            'notes'=>$request->notes,
+            'project_id'=>$request->project,    
         ];
         //make the boring entries
         if($id) {$newInterview=interview::find($id)->update($newValues);}
@@ -105,6 +106,7 @@ class interviewController extends Controller
         $data['interview']=interview::where('id',$id)->with('project')->with('contacts')->with('features')->first();
         $data['projectfeatureList']= project::Find($data['interview']->project_id)->with('features')->first()->features->pluck('name','id')->toArray();
         $data['contacts']=contact::pluck('name','id')->toArray();
+        $data['projects']=project::all()->pluck('name','id')->toArray();
 
         $nextObj=interview::where('id','>',$id)->where('project_id',$data['interview']->project_id)->first();
         $prevObj=interview::where('id','<',$id)->where('project_id',$data['interview']->project_id)->get()->last();
@@ -124,5 +126,11 @@ class interviewController extends Controller
     {
         interview::find($id)->delete();
         return redirect('/interviews');
+    }
+
+    public function loadFeatures(Request $request)
+    {
+        $id=$request->id;
+        return(project::where('id',$id)->with('features')->first()->features->pluck('name','id')->toArray());
     }
 }

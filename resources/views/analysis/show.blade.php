@@ -17,7 +17,7 @@
 						<div class="col-md-12">
 							<div class="col-md-4">
 								{{Form::label('project','Project:')}}
-								{{Form::select('project',$project,['class' => 'inputListener'])}}
+								{{Form::select('project',$project,null,['class' => 'inputListener'])}}
 							</div>
 							<div class="col-md-4">
 								{{Form::label('start','Start:')}}
