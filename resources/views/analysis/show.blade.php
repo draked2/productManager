@@ -281,8 +281,10 @@ function updateBarGraph(divId, title,data){
     series: [{
         name: 'This Project',
         data: data.map(function(a) {return a.count;}),
-
     }, ],
+	 legend: {
+        enabled: false
+    },
 	credits: {
       enabled: false
   },

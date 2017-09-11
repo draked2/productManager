@@ -21,7 +21,7 @@
 						{
 							$id=0;
 							$description="";
-							$name="New Project";
+							$name="";
 						}
 
 					?>
@@ -36,10 +36,11 @@
 						{{Form::label('name','Name: ')}}
 						</div>
 						<div class="col-md-12 control-group">
-						{{Form::text('name', $name,['style'=>"width: 100%; margin-bottom: 10px;"])}}
+						{{Form::text('name', $name,['style'=>"width: 100%; margin-bottom: 10px;",
+													'placeholder'=>'Type project name here'])}}
 						</div>
 						<div class="col-md-12">
-						{{Form::label('description','Description: ')}}
+						{{Form::label('description','Description: ',['placeholder'=>'Type description of project here'])}}
 						</div>
 						<div class="col-md-12 control-group">
 						{{Form::textArea('description', $description,['style'=>"width: 100%; margin-bottom: 10px;"])}}
@@ -144,9 +145,15 @@ function deleteRow(obj) {
 }
 
 $( document ).ready(function() {
+	//add tagging ability
 	initializeFeatureTags($('.featureList'))
+
+	//add button listeners
 	$('#addAnotherRow').click(function() {appendCategoryRow()})
 	$('.del').click(function(){deleteRow()})
+
+	//if there are no rows, initialize a row
+	if($('#categoryTable tr').length<=2) $('#addAnotherRow').click()
 })
 
 //# sourceURL=addeditProject.js
