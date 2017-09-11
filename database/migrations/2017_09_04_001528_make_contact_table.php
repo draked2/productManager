@@ -16,8 +16,8 @@ class MakeContactTable extends Migration
         Schema::create('contacts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('email');
-            $table->string('phoneNumber');
+            $table->string('email')->nullable();
+            $table->string('phoneNumber')->nullable();
             $table->integer('organization_id')->nullable()->unsigned();
             $table->foreign('organization_id')->references('id')->on('organizations');
             $table->timestamps();

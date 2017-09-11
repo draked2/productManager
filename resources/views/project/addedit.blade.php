@@ -141,7 +141,6 @@ function appendCategoryRow() {
 function deleteRow(obj) {
 	$(obj).parent().parent().find('[name^=deleteFlag]').val(1)
 	$(obj).parent().parent().hide()
-	console.log('here')
 }
 
 $( document ).ready(function() {

@@ -17,6 +17,7 @@
                     <div class="pull-right">
 						<a class="btn btn-primary" href="{{ url('/interviews/create') }}">Add Interview</a>
                         </div>
+                        <br>
                         <div>
                         <table style="width:100%" class="dataTable">
                         <thead>

@@ -31,10 +31,17 @@ class interviewController extends Controller
      */
     public function create()
     {
-        $data=[];
-        $data['moduleName']='Interviews List';
-        $data['interviews']=interview::with('project')->with('contacts')->orderBy('date','DESC')->get();
-        return view('interview.show', $data);
+        $data['moduleName']='Interview Details';  
+        $projectId=project::all()->first()->id;
+        $data['projectfeatureList']= project::Find($projectId)->with('features')->first()->features->pluck('name','id')->toArray();
+        $data['contacts']=contact::pluck('name','id')->toArray();
+        $data['selectedProject']=$projectId;
+        $data['projects']=project::all()->pluck('name','id')->toArray();
+
+        $prevObj=interview::where('project_id',$projectId)->get()->last();
+        if(isset($prevObj)) $data['prevURL']=url('/interviews/update/'.$prevObj->id);
+
+        return view('interview.addedit', $data);
     }
 
     /**
@@ -53,19 +60,36 @@ class interviewController extends Controller
         ];
         //make the boring entries
         if($id) {$newInterview=interview::find($id)->update($newValues);}
-        else {$newInterview=interview::create($newValues);}
+        else {
+            
+            $newInterview=interview::create($newValues);
+            $id=$newInterview->id;
+        }
         //update the pivot tables by first deleting all current entries, then adding new entries
         featureInterview::where('interview_id',$id)->delete();
-        foreach($request->features as $feature){
-            featureInterview::create(['interview_id'=>$id,
-                                        'feature_id'=>$feature
-                                    ]);
+        if(isset($request->features))
+        {
+            foreach($request->features as $feature){
+                featureInterview::create(['interview_id'=>$id,
+                                            'feature_id'=>$feature
+                                        ]);
+            }
         }
         contactInterview::where('interview_id',$id)->delete();
-        foreach($request->contacts as $contact){
-            contactInterview::create(['interview_id'=>$id,
-                                        'contact_id'=>$contact
-                                    ]);
+        if(isset($request->contacts))
+        {
+            foreach($request->contacts as $contact){
+                if(!(string)(int)$contact == $contact) 
+                {
+                    $newContact=contact::create([
+                    'name'=>$contact,
+                    ]);
+                    $contact=$newContact->id;
+                }
+                contactInterview::create(['interview_id'=>$id,
+                                            'contact_id'=>$contact
+                                        ]);
+            }
         }
         return redirect('/interviews');
 
@@ -106,6 +130,7 @@ class interviewController extends Controller
         $data['interview']=interview::where('id',$id)->with('project')->with('contacts')->with('features')->first();
         $data['projectfeatureList']= project::Find($data['interview']->project_id)->with('features')->first()->features->pluck('name','id')->toArray();
         $data['contacts']=contact::pluck('name','id')->toArray();
+        $data['selectedProject']=$data['interview']->project_id;
         $data['projects']=project::all()->pluck('name','id')->toArray();
 
         $nextObj=interview::where('id','>',$id)->where('project_id',$data['interview']->project_id)->first();

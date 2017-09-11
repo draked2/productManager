@@ -238,7 +238,10 @@ function updatePieChart(divId, text, data) {
         name: 'Categories',
         colorByPoint: true,
         data: data
-    }]
+    }],
+	credits: {
+      enabled: false
+  },
 })}
 
 function toObject(arr) {
@@ -279,7 +282,10 @@ function updateBarGraph(divId, title,data){
         name: 'This Project',
         data: data.map(function(a) {return a.count;}),
 
-    }, ]
+    }, ],
+	credits: {
+      enabled: false
+  },
 });
 }
 $( document ).ready(function() {

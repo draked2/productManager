@@ -84,7 +84,7 @@
 						{{Form::label('project','Project: ')}}
 						</div>
 						<div class="col-md-9 control-group">
-						{{Form::select('project', $projects,null,['style'=>"width: 200px;margin-bottom: 10px;"])}}
+						{{Form::select('project', $projects,$selectedProject,['style'=>"width: 200px;margin-bottom: 10px;"])}}
 						</div>
 						<div class="col-md-3">
 						{{Form::label('date','Date: ')}}
@@ -102,7 +102,6 @@
 																						'style'=>"width: 200px;height: 100px;margin-bottom: 10px;"
 																						]) }}
 						</div>
-
 						<div class="col-md-3">
 						{{Form::label('contacts','Contacts: ')}}
 						</div>
@@ -111,7 +110,9 @@
 																						'id'=>'contacts',
 																						'style'=>"width: 200px;height: 100px;margin-bottom: 10px;"
 																						]) }}
+						<a class='fa fa-plus-square-o  fa-3x' data-toggle="modal" data-target="#myModal"></a>
 						</div>
+						
                     </div>
 
 					<div class="col-md-7">
@@ -134,6 +135,29 @@
 			</div>
 		</div>
 	</div>
+
+
+	<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Contact</h4>
+      </div>
+      <div class="modal-body">
+        <p>New Name</p>
+		<input id='newContactInput' type="text" name="name"><br>
+      </div>
+      <div class="modal-footer">
+        <button id='newContactButton' type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 @endsection
 
 @section('additionalScripts')
@@ -148,8 +172,6 @@ function updateFeatures(){
 			"id":$('#project').val(),
 		},
 		"success": function(result){
-
-
 			$('#features')
 				.find('option')
 				.remove()
@@ -161,9 +183,19 @@ function updateFeatures(){
 	});
 }
 
+function addContact(){
+	//we flag new contacts in the front end with negative numbers. THe controller identifies new entries if
+	//selected and stores them in the database (don't allow entries of 0)
+	$('#contacts').append(new Option($('#newContactInput').val(),$('#newContactInput').val()))
+}
+
 $( document ).ready(function() {
 	$('#project').change(function(){
 		updateFeatures()
+	})
+
+	$('#newContactButton').click(function(){
+		addContact()
 	})
 })
 //# sourceURL=interviewAddedit.js
