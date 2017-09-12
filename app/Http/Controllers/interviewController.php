@@ -135,6 +135,14 @@ class interviewController extends Controller
 
         $nextObj=interview::where('id','>',$id)->where('project_id',$data['interview']->project_id)->first();
         $prevObj=interview::where('id','<',$id)->where('project_id',$data['interview']->project_id)->get()->last();
+        
+        /*
+        $postedDate=$data['interview']->date->format('y-m-d');
+        $createdDate=$data['interview']->created_at->format('y-m-d h:i:s');
+        $nextObj=interview::whereRaw(" date(`date`)>'".$postedDate."' OR (date(`date`)='".$postedDate."' AND `created_at`>'".$createdDate."' AND id <> '".$id."')")->orderBy('created_at','ASC')->orderBy('date','ASC')->first();
+        $prevObj=interview::whereRaw(" date(`date`)<'".$postedDate."' OR (date(`date`)='".$postedDate."' AND `created_at`<'".$createdDate."' AND `created_at`<>'".$createdDate."' AND id <> '".$id."')")->orderBy('created_at','DESC')->orderBy('date','DESC')->first();
+        */
+        
         if(isset($nextObj)) $data['nextURL']=url('/interviews/update/'.$nextObj->id);
         if(isset($prevObj)) $data['prevURL']=url('/interviews/update/'.$prevObj->id);
 

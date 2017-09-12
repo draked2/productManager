@@ -154,6 +154,10 @@ $( document ).ready(function() {
 
 	//if there are no rows, initialize a row
 	if($('#categoryTable tr').length<=2) $('#addAnotherRow').click()
+
+	$('[name=description]').summernote({
+		height:300,
+	});
 })
 
 //# sourceURL=addeditProject.js

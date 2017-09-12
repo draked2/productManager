@@ -75,12 +75,6 @@
 
 					<div class="col-md-5" style="margin-top: 25px;">
 						<div class="col-md-3">
-						<a class="btn btn-default btn-close" href="{{ URL::previous() }}">Cancel</a>
-						</div>
-						<div class="col-md-9">
-						{{Form::submit('Save',['class'=>'btn btn-primary form-control','style'=>"margin-bottom: 10px;"])}}
-						</div>
-						<div class="col-md-3">
 						{{Form::label('project','Project: ')}}
 						</div>
 						<div class="col-md-9 control-group">
@@ -123,6 +117,13 @@
 						{{Form::textarea('notes',$notes,['style'=>"width:100%"])}}
 						</div>
                     </div>
+					<div class="col-md-12">
+						{{Form::submit('Save',['class'=>'btn btn-primary form-control','style'=>"margin-bottom: 10px;"])}}
+					</div>
+					<div class="col-md-12">
+						<a class="btn btn-default btn-close" href="{{ URL::previous() }}" style='width:100%'>Cancel</a>
+					</div>
+					
 					
 					{{Form::close()}}
 						
@@ -197,6 +198,11 @@ $( document ).ready(function() {
 	$('#newContactButton').click(function(){
 		addContact()
 	})
+
+	//add summernotes compatibility
+	$('[name=notes]').summernote({
+		height:300,
+	});
 })
 //# sourceURL=interviewAddedit.js
 </script>

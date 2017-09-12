@@ -6,7 +6,11 @@
 <script src="{{ asset('/js/typeahead.jquery.js') }}" type="text/javascript"></script>
 <script type="text/javascript" src="{{ asset('js/datatables.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/selectize.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+{{--<script type="text/javascript" src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>--}}
+ <script type="text/javascript" src="{{ asset('js/highcharts/highcharts.js') }}"></script>
+ <script type="text/javascript" src="{{ asset('js/highcharts/modules/exporting.js') }}"></script>
+ <script type="text/javascript" src="{{ asset('summernote/summernote.js') }}"></script>
+
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the
@@ -43,13 +47,15 @@ Vue.config.productionTip = false
             }
 
             //draw calendars
+            /*
             $("[type=date]").datepicker({
                 changeMonth: true,
                 changeYear: true
             });
-            
+           
 
   });
+   */
             });
         } );
 
