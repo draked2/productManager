@@ -8,6 +8,7 @@ use App\project;
 use App\contact;
 use App\featureInterview;
 use App\contactInterview;
+use DateTime;
 
 class interviewController extends Controller
 {
@@ -54,7 +55,7 @@ class interviewController extends Controller
     {
         $id=$request->id;
         $newValues=[
-            'date'=>$request->date,  
+            'date'=>DateTime::createFromFormat('d-m-Y', $request->date),
             'notes'=>$request->notes,
             'project_id'=>$request->project,    
         ];

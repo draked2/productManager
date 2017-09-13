@@ -10,6 +10,9 @@
  <script type="text/javascript" src="{{ asset('js/highcharts/highcharts.js') }}"></script>
  <script type="text/javascript" src="{{ asset('js/highcharts/modules/exporting.js') }}"></script>
  <script type="text/javascript" src="{{ asset('summernote/summernote.js') }}"></script>
+ <script type="text/javascript" src="{{ asset('js/phoneNumber.js') }}"></script>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+
 
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.

@@ -21,11 +21,11 @@
 							</div>
 							<div class="col-md-4">
 								{{Form::label('start','Start:')}}
-								{{Form::date('start', \Carbon\Carbon::now()->subDays(30),['class' => 'inputListener'])}}
+								{{Form::text('start', \Carbon\Carbon::now()->subDays(30)->format('d-m-Y'),['class' => 'inputListener datepicker'])}}
 							</div>
 							<div class="col-md-4">
 								{{Form::label('stop','Stop:')}}
-								{{Form::date('stop', \Carbon\Carbon::now(),['class' => 'inputListener'])}}
+								{{Form::text('stop', \Carbon\Carbon::now()->format('d-m-Y'),['class' => 'inputListener datepicker'])}}
 							</div>
 						</div>
 					</div>
@@ -49,6 +49,8 @@
 									<tr>
 										<th>Name</th>
 										<th>Count</th>
+										<th>id</th>
+										<th>Other</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -75,6 +77,8 @@
 									<tr>
 										<th>Name</th>
 										<th>Count</th>
+										<th>id</th>	
+										<th>Option</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -101,6 +105,38 @@
 			</div>
 		</div>
 	</div>
+
+<!-- Modal -->
+<div id="categoriesModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Relevant Interviews</h4>
+      </div>
+      <div class="modal-body">
+        <table id='modalTable' class="display" cellspacing="0" width="100%">
+			<thead>
+				<tr>
+					<th nowrap="nowrap">Date</th>
+					<th>Names</th> 
+					<th nowrap="nowrap">Project</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+      </div>
+      <div class="modal-footer">
+        <button id='newContactButton' type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 @endsection
 
 @section('additionalScripts')
@@ -173,9 +209,74 @@ function drawDatatable(divId,data) {
 
 	 $(divId).DataTable( {
 		"data": data,
+		
         "columns": [
             { "data": "name" },
             { "data": "count" },
+			{ "data": "id", 
+			className: "rowId" },
+			{"data": null,
+      		"defaultContent": "<button><i class='fa fa-info-circle' aria-hidden='true' onclick=pullupModalDatatable(this) data-toggle='modal' data-target='#categoriesModal'></i></button>",},
+        ],
+		 scrollY:        '300',
+            deferRender:    true,
+            scroller:       true,
+            "lengthChange": false,
+            drawCallback: function(settings) {
+                var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                pagination.hide();
+                //hacky way of getting the searchbar to the left by finding the half 
+                //column element and pulling it right
+                $('.dataTables_filter').parent().prev().addClass('pull-right');
+                //force css of table
+                $("tr:even").css("background-color", "#F0F8FF")
+                $("th").css("background-color", "#E6E6FA")
+            }
+    } );
+}
+
+function pullupCategoriesModalDatatable(ref){
+	console.log('test')
+	$(obj).parent().parent().find('.rowId').val(1)
+	$.ajax({
+		"url": "{{url('/analysis/getData')}}",
+		"type": "POST",
+		
+		"data":{
+			"_token":"{{csrf_token()}}",
+			"id":id,
+			"start":start,
+			"stop":stop,
+		},
+		"success": function(result){
+			category=result['categoryStats']
+			feature=result['featureStats']
+			interview=result['interviewCount']
+
+			drawDatatable('#categoryTable',category)
+			updatePieChart('categoryContainer','Categories',category)
+
+			drawDatatable('#featureTable',feature)
+			updatePieChart('featureContainer','Features',feature)
+
+			updateBarGraph('interviewContainer', 'Weekly Interviews Conducted',interview)
+			}
+		
+	});
+}
+
+function drawModalDatatable(data) {
+
+	 $('#modalTable').DataTable( {
+		"data": data,
+		
+        "columns": [
+			{ "data": "id", 
+			"visible": true,},
+            { "data": "name" },
+            { "data": "count" },
+			{"data": null,
+      		"defaultContent": "<button><i class='fa fa-info-circle modalButton' aria-hidden='true'></i></button>",},
         ],
 		 scrollY:        '300',
             deferRender:    true,
@@ -293,6 +394,8 @@ function updateBarGraph(divId, title,data){
 $( document ).ready(function() {
 	startAnalytics();
 	$('.inputListener').change(function() {updateAnalytics()});
+	$('.datepicker').datepicker({ format: 'dd-mm-yyyy' })
+
 })
 
 //# sourceURL=analysis.js

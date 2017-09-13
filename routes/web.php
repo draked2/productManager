@@ -27,9 +27,11 @@ Route::get('/projects/update/{id}','projectController@update');
 Route::post('/projects/store','projectController@store');
 Route::get('/projects/create','projectController@create');
 
-
-
-
+Route::get('/contacts','contactController@index');
+Route::get('/contacts/destroy/{id}','contactController@destroy');
+Route::get('/contacts/update/{id}','contactController@update');
+Route::post('/contacts/store','contactController@store');
+Route::get('/contacts/create','contactController@create');
 
 Route::get('/interviews','interviewController@index');
 Route::get('/interviews/destroy/{id}','interviewController@destroy');

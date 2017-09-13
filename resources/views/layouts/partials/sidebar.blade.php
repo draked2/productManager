@@ -37,6 +37,7 @@
             <li class="active"><a href="{{ url('analysis') }}"><i class='fa fa-line-chart'></i> <span>Analysis</span></a></li>
             <li class="active"><a href="{{ url('projects') }}"><i class='fa fa-object-group'></i> <span>Projects</span></a></li>
             <li class="active"><a href="{{ url('interviews') }}"><i class='fa fa-user-circle '></i> <span>Research</span></a></li>
+            <li class="active"><a href="{{ url('contacts') }}"><i class='fa fa-users '></i> <span>Contacts</span></a></li>
 
             {{--
             <li class="treeview">

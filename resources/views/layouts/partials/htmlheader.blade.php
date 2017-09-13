@@ -12,8 +12,7 @@
     <link href="{{ asset('/css/highcharts.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/summernote/summernote.css') }}" rel="stylesheet" type="text/css" />
 
-
-    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

@@ -22,7 +22,7 @@
 						if(isset($interview)){
 							$id=$interview->id;
 							$notes=$interview->notes;
-							$date=$interview->date;
+							$date=$interview->date->format('d-m-Y');
 							$selectedContacts=$interview->contacts->pluck('name')->toArray();
 							$selectedFeatures=$interview->features->pluck('name')->toArray();
 							$selectedContactsId=[];
@@ -45,7 +45,7 @@
 						{
 							$id=0;
 							$notes='';
-							$date=\Carbon\Carbon::now();
+							$date=\Carbon\Carbon::now()->format('d-m-Y');
 							$selectedContactsId=[];
 							$selectedFeaturesId=[];
 						}
@@ -84,7 +84,8 @@
 						{{Form::label('date','Date: ')}}
 						</div>
 						<div class="col-md-9 control-group">
-						{{Form::date('date', $date,['style'=>"width: 200px;margin-bottom: 10px;"])}}
+						{{Form::text('date', $date,['class'=>'datepicker',
+							'style'=>"width: 200px;margin-bottom: 10px;"])}}
 						</div>
 						
 						<div class="col-md-3">
@@ -149,9 +150,15 @@
         <h4 class="modal-title">Add Contact</h4>
       </div>
       <div class="modal-body">
-        <p>New Name</p>
-		<input id='newContactInput' type="text" name="name"><br>
-      </div>
+			<p>New Name</p>
+			<input id='newContactInput' type="text" name="name"><br>
+			<!--
+			<p>Email</p>
+			<input id='newContactEmail' type="text" name="name"><br>
+			<p>Phone Number</p>
+			<input id='newContactPhone' type="text" name="name" onkeydown="javascript:backspacerDOWN(this,event);" onkeyup="javascript:backspacerUP(this,event);"><br>
+			-->
+	  </div>
       <div class="modal-footer">
         <button id='newContactButton' type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
       </div>
@@ -203,6 +210,8 @@ $( document ).ready(function() {
 	$('[name=notes]').summernote({
 		height:300,
 	});
+
+	$('.datepicker').datepicker({ format: 'dd-mm-yyyy' })
 })
 //# sourceURL=interviewAddedit.js
 </script>
