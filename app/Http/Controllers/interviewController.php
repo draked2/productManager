@@ -139,25 +139,29 @@ class interviewController extends Controller
         $prevObj=interview::where('id','<',$id)->where('project_id',$data['interview']->project_id)->get()->last();
         */
 
-        
+        $projId=$data['interview']->project_id;
         $postedDate=$data['interview']->date->format('y-m-d');
 
-        $nextObj=interview::whereRaw(" date(`date`)>'".$postedDate."' OR (date(`date`)='".$postedDate."' AND id > '".$id."')")->orderBy('date','ASC')->first();
+        $nextObj=interview::where('project_id',$projId)->whereRaw(" date(`date`)>'".$postedDate."' OR (date(`date`)='".$postedDate."' AND id > '".$id."')")->orderBy('date','ASC')->first();
         //poorly written code to get previous to work correctly
-        $prevDate=interview::whereRaw(" date(`date`)<='".$postedDate."' AND id <> ".$id)->orderBy('date','DESC')->first();
+        $prevDate=interview::where('project_id',$projId)->whereRaw(" date(`date`)<='".$postedDate."' AND id <> ".$id)->orderBy('date','DESC')->first();
         //dd($prevDate->date);
+        
         if(isset($prevDate))
         {
             if($prevDate->date==$data['interview']->date) 
             {
-                $prevObj=interview::whereRaw(" date(`date`)='".$postedDate."' AND id<".$id)->orderBy('id','DESC')->first();
+                
+                $prevObj=interview::where('project_id',$projId)->whereRaw(" date(`date`)='".$postedDate."' AND id<".$id)->orderBy('id','DESC')->first();
                 if(!isset($prevObj)) {
-                    $prevDate2=interview::whereRaw(" date(`date`)<'".$postedDate."'")->orderBy('date','DESC')->first();
-                    if(isset($prevDate2)) $prevObj=interview::whereRaw(" date(`date`)='".$prevDate2->date."'")->orderBy('id','DESC')->first();
+                    $prevDate2=interview::where('project_id',$projId)->whereRaw(" date(`date`)<'".$postedDate."'")->orderBy('date','DESC')->first();
+                    if(isset($prevDate2)) $prevObj=interview::where('project_id',$projId)->whereRaw(" date(`date`)='".$prevDate2->date."'")->orderBy('id','DESC')->first();
                 }
+                
             }
-            else $prevObj=interview::whereRaw(" date(`date`)='".$postedDate)->orderBy('id','DESC')->first();
+            else $prevObj=interview::where('project_id',$projId)->whereRaw(" date(`date`)='".$postedDate."'")->orderBy('id','DESC')->first();
         }
+        
     
         
     
