@@ -40,7 +40,7 @@ class interviewController extends Controller
         $data['projects']=project::all()->pluck('name','id')->toArray();
 
         $prevObj=interview::where('project_id',$projectId)->get()->last();
-        if(isset($prevObj)) $data['prevURL']=url('/interviews/update/'.$prevObj->id);
+        //if(isset($prevObj)) $data['prevURL']=url('/interviews/update/'.$prevObj->id);
 
         return view('interview.addedit', $data);
     }
@@ -134,11 +134,11 @@ class interviewController extends Controller
         $data['selectedProject']=$data['interview']->project_id;
         $data['projects']=project::all()->pluck('name','id')->toArray();
 
-        /*
+        
         $nextObj=interview::where('id','>',$id)->where('project_id',$data['interview']->project_id)->first();
         $prevObj=interview::where('id','<',$id)->where('project_id',$data['interview']->project_id)->get()->last();
-        */
-
+        
+        /*
         $projId=$data['interview']->project_id;
         $postedDate=$data['interview']->date->format('y-m-d');
 
@@ -161,11 +161,7 @@ class interviewController extends Controller
             }
             else $prevObj=interview::where('project_id',$projId)->whereRaw(" date(`date`)='".$postedDate."'")->orderBy('id','DESC')->first();
         }
-        
-    
-        
-    
-        
+        */
         
         if(isset($nextObj)) $data['nextURL']=url('/interviews/update/'.$nextObj->id);
         if(isset($prevObj)) $data['prevURL']=url('/interviews/update/'.$prevObj->id);
